@@ -6,8 +6,6 @@ lowercase = string.ascii_lowercase
 nums = string.digits
 symbols = "!@#$%^&*"
 
-print("PassBird - A Simple Password Generator")
-
 
 def create_password(length):
     password = ""
@@ -36,5 +34,16 @@ def create_password(length):
     return password
 
 
-while True:
-    print(create_password(input()))
+print("Welcome to PassBird! "
+      "Generate a strong and "
+      "secure password by typing the length of your desired password.")
+
+run = True
+
+while run:
+    user_input = input()
+
+    if user_input.lower() == "stop":
+        run = False
+    else:
+        print(create_password(user_input))
