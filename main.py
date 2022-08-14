@@ -45,5 +45,8 @@ while run:
 
     if user_input.lower() == "stop":
         run = False
+    elif user_input.lower() == "help":
+        print("Type a number between 1-255 to generate a password")
+        print("Type 'stop' to end the program")
     else:
         print(create_password(user_input))
