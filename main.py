@@ -1,6 +1,8 @@
 import random
 import string
 
+import click
+
 uppercase = string.ascii_uppercase
 lowercase = string.ascii_lowercase
 nums = string.digits
@@ -34,19 +36,11 @@ def create_password(length):
     return password
 
 
-print("Welcome to PassBird! "
-      "Generate a strong and "
-      "secure password by typing the length of your desired password.")
+@click.command()
+@click.option("--length", "-l", type=int, help="Length of password (1-255)")
+def main(length):
+    print(create_password(length))
 
-run = True
 
-while run:
-    user_input = input()
-
-    if user_input.lower() == "stop":
-        run = False
-    elif user_input.lower() == "help":
-        print("Type a number between 1-255 to generate a password")
-        print("Type 'stop' to end the program")
-    else:
-        print(create_password(user_input))
+if __name__ == '__main__':
+    main()
