@@ -1,14 +1,15 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="supercli",
-    version="0.0.0",
+    name='passbird',
+    version='0.0.1',
     packages=find_packages(),
     install_requires=[
         "click"
     ],
-    entry_point='''
-    [console_scripts]
-    super=supercli:supercli
-    '''
+    entry_points={
+        'console_scripts': [
+            'passbird = passbird.passbird:main'
+        ]
+    }
 )
