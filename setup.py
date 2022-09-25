@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='passbird',
-    version='0.0.1',
+    version='1.0.0',
     license="MIT",
     description="Python Password Generator - Generate strong and secure passwords!",
     long_description=long_description,
