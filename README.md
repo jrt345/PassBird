@@ -41,4 +41,4 @@ PassBird uses [SemVer](http://semver.org/) for versioning. For the versions avai
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/jrt345/PassBird/blob/master/LICENSE) file for details
