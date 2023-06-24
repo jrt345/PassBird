@@ -40,6 +40,12 @@ def create_password(length, options):
 
     return password
 
+def create_txt_file(file_name, passwords):
+    with open(file_name, "w") as file:
+        for password in passwords:
+            file.write(password + '\n')
+    print(f"Successfully exported to '{file_name}' .")
+
 
 @click.command()
 @click.option("--length", "-l", type=click.IntRange(1, 255), help="Length of password")
@@ -48,11 +54,19 @@ def create_password(length, options):
 @click.option("--include_lowercase", "-lc", is_flag=True, help="Include lowercase letters")
 @click.option("--include_numbers", "-num", is_flag=True, help="Include numbers")
 @click.option("--include_symbols", "-sym", is_flag=True, help="Include symbols letters")
-def main(length, count, include_uppercase, include_lowercase, include_numbers, include_symbols):
+@click.option("--export", "-ex", is_flag=True, help="Export passwords")
+def main(length, count, include_uppercase, include_lowercase, include_numbers, include_symbols, export):
     options = (include_uppercase, include_lowercase, include_numbers, include_symbols)
+    passwords = []
 
     for i in range(count):
-        print(create_password(length, options))
+         passwords.append(create_password(length, options))
+
+    if export:
+        create_txt_file("passwords.txt", passwords)
+    else:
+        for password in passwords:
+            print(password)
 
 
 if __name__ == '__main__':
