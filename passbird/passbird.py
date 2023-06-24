@@ -10,35 +10,21 @@ nums = string.digits
 symbols = "!@#$%^&*"
 
 
-def get_selected_options(options):
-    options_selection = []
+def generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numbers, exclude_symbols):
+    characters = ''
+    if not exclude_uppercase:
+        characters += string.ascii_uppercase
+    if not exclude_lowercase:
+        characters += string.ascii_lowercase
+    if not exclude_numbers:
+        characters += string.digits
+    if not exclude_symbols:
+        characters += symbols
 
-    if not any(options):
-        for i in range(4):
-            options_selection.append(i + 1)
+    if not characters:
+        raise ValueError("At least one character type must be enabled.")
 
-    for i in range(4):
-        if options[i]:
-            options_selection.append(i + 1)
-
-    return options_selection
-
-
-def create_password(length, options):
-    password = ""
-
-    for i in range(int(length)):
-        selection = random.choice(get_selected_options(options))
-
-        if selection == 1:
-            password = password + random.choice(list(uppercase))
-        if selection == 2:
-            password = password + random.choice(list(lowercase))
-        if selection == 3:
-            password = password + random.choice(list(nums))
-        if selection == 4:
-            password = password + random.choice(list(symbols))
-
+    password = ''.join(random.choice(characters) for _ in range(length))
     return password
 
 
@@ -61,17 +47,16 @@ def create_txt_file(file_name, passwords):
 @click.command()
 @click.option("--length", "-l", type=click.IntRange(1, 255), help="Length of password")
 @click.option("--count", "-c", type=click.IntRange(1), default=1, show_default=True, help="Print number of passwords at once")
-@click.option("--include_uppercase", "-uc", is_flag=True, help="Include uppercase letters")
-@click.option("--include_lowercase", "-lc", is_flag=True, help="Include lowercase letters")
-@click.option("--include_numbers", "-num", is_flag=True, help="Include numbers")
-@click.option("--include_symbols", "-sym", is_flag=True, help="Include symbols letters")
+@click.option("--exclude_uppercase", "-uc", is_flag=True, help="Exclude uppercase letters")
+@click.option("--exclude_lowercase", "-lc", is_flag=True, help="Exclude lowercase letters")
+@click.option("--exclude_numbers", "-num", is_flag=True, help="Exclude numbers")
+@click.option("--exclude_symbols", "-sym", is_flag=True, help="Exclude symbols letters")
 @click.option("--export", "-x", is_flag=True, help="Export passwords")
-def main(length, count, include_uppercase, include_lowercase, include_numbers, include_symbols, export):
-    options = (include_uppercase, include_lowercase, include_numbers, include_symbols)
+def main(length, count, exclude_uppercase, exclude_lowercase, exclude_numbers, exclude_symbols, export):
     passwords = []
 
     for i in range(count):
-         passwords.append(create_password(length, options))
+         passwords.append(generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numbers, exclude_symbols))
 
     if export:
         create_txt_file(get_unique_file_name("Passwords.txt"), passwords)
