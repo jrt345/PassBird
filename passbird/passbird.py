@@ -37,11 +37,12 @@ def get_unique_file_name(file_name):
         counter += 1
     return unique_file_name
 
+
 def create_txt_file(file_name, passwords):
     with open(file_name, "w") as file:
         for password in passwords:
             file.write(password + '\n')
-    print(f"Successfully exported to '{file_name}'.")
+    print(f"Successfully exported to \"{file_name}\".")
 
 
 @click.command()
@@ -56,13 +57,13 @@ def main(length, count, exclude_uppercase, exclude_lowercase, exclude_numbers, e
     passwords = []
 
     for i in range(count):
-         passwords.append(generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numbers, exclude_symbols))
+        passwords.append(generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numbers, exclude_symbols))
+
+    for password in passwords:
+        print(password)
 
     if export:
         create_txt_file(get_unique_file_name("Passwords.txt"), passwords)
-    else:
-        for password in passwords:
-            print(password)
 
 
 if __name__ == '__main__':
