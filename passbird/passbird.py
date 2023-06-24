@@ -1,3 +1,4 @@
+import os
 import random
 import string
 
@@ -40,11 +41,21 @@ def create_password(length, options):
 
     return password
 
+
+def get_unique_file_name(file_name):
+    base_name, extension = os.path.splitext(file_name)
+    counter = 1
+    unique_file_name = file_name
+    while os.path.exists(unique_file_name):
+        unique_file_name = f"{base_name}_{counter}{extension}"
+        counter += 1
+    return unique_file_name
+
 def create_txt_file(file_name, passwords):
     with open(file_name, "w") as file:
         for password in passwords:
             file.write(password + '\n')
-    print(f"Successfully exported to '{file_name}' .")
+    print(f"Successfully exported to '{file_name}'.")
 
 
 @click.command()
@@ -54,7 +65,7 @@ def create_txt_file(file_name, passwords):
 @click.option("--include_lowercase", "-lc", is_flag=True, help="Include lowercase letters")
 @click.option("--include_numbers", "-num", is_flag=True, help="Include numbers")
 @click.option("--include_symbols", "-sym", is_flag=True, help="Include symbols letters")
-@click.option("--export", "-ex", is_flag=True, help="Export passwords")
+@click.option("--export", "-x", is_flag=True, help="Export passwords")
 def main(length, count, include_uppercase, include_lowercase, include_numbers, include_symbols, export):
     options = (include_uppercase, include_lowercase, include_numbers, include_symbols)
     passwords = []
@@ -63,7 +74,7 @@ def main(length, count, include_uppercase, include_lowercase, include_numbers, i
          passwords.append(create_password(length, options))
 
     if export:
-        create_txt_file("passwords.txt", passwords)
+        create_txt_file(get_unique_file_name("Passwords.txt"), passwords)
     else:
         for password in passwords:
             print(password)
