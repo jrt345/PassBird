@@ -4,11 +4,6 @@ import string
 
 import click
 
-uppercase = string.ascii_uppercase
-lowercase = string.ascii_lowercase
-nums = string.digits
-symbols = "!@#$%^&*"
-
 
 def generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numbers, exclude_symbols):
     characters = ''
@@ -19,12 +14,26 @@ def generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numb
     if not exclude_numbers:
         characters += string.digits
     if not exclude_symbols:
-        characters += symbols
+        characters += "!@#$%^&*"
 
     if not characters:
         raise ValueError("At least one character type must be enabled.")
 
     password = ''.join(random.choice(characters) for _ in range(length))
+
+    # Check if password contains at least one of each character type
+    contains_uppercase = any(char.isupper() for char in password)
+    contains_lowercase = any(char.islower() for char in password)
+    contains_number = any(char.isdigit() for char in password)
+    contains_symbol = any(char in string.punctuation for char in password)
+
+    # Regenerate the password if any character type is missing
+    if (not exclude_uppercase and not contains_uppercase) or \
+            (not exclude_lowercase and not contains_lowercase) or \
+            (not exclude_numbers and not contains_number) or \
+            (not exclude_symbols and not contains_symbol):
+        return generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numbers, exclude_symbols)
+
     return password
 
 
