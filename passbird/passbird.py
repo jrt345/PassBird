@@ -4,6 +4,8 @@ import string
 
 import click
 
+symbols = "!@#$%^&*"
+
 
 def generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numbers, exclude_symbols):
     characters = ''
@@ -14,7 +16,7 @@ def generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numb
     if not exclude_numbers:
         characters += string.digits
     if not exclude_symbols:
-        characters += "!@#$%^&*"
+        characters += symbols
 
     if not characters:
         raise ValueError("At least one character type must be enabled.")
@@ -25,7 +27,7 @@ def generate_password(length, exclude_uppercase, exclude_lowercase, exclude_numb
     contains_uppercase = any(char.isupper() for char in password)
     contains_lowercase = any(char.islower() for char in password)
     contains_number = any(char.isdigit() for char in password)
-    contains_symbol = any(char in string.punctuation for char in password)
+    contains_symbol = any(char in symbols for char in password)
 
     # Regenerate the password if any character type is missing
     if (not exclude_uppercase and not contains_uppercase) or \
@@ -55,8 +57,8 @@ def create_txt_file(file_name, passwords):
 
 
 @click.command()
-@click.option("--length", "-l", type=click.IntRange(1, 255), help="Length of password")
-@click.option("--count", "-c", type=click.IntRange(1), default=1, show_default=True, help="Print number of passwords at once")
+@click.option("--length", "-l", type=click.IntRange(4, 255), help="Length of password")
+@click.option("--count", "-c", type=click.IntRange(1, 65535), default=1, show_default=True, help="Print number of passwords at once")
 @click.option("--exclude_uppercase", "-uc", is_flag=True, help="Exclude uppercase letters")
 @click.option("--exclude_lowercase", "-lc", is_flag=True, help="Exclude lowercase letters")
 @click.option("--exclude_numbers", "-num", is_flag=True, help="Exclude numbers")
